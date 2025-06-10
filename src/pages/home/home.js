@@ -1,7 +1,6 @@
-<HTML>
-    <body>
-    <h1> organic-products</h1>
-    </body>
-    <h1> organic-products</h1>
+<html>
+    <head>
+    <title><center>orgnic products</center></title>
     
-</HTML>
+    </head>
+</html>
