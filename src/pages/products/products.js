@@ -13,8 +13,8 @@ const ProductsPage = () => {
   });
 
   const categories = [
-    'Herbal Teas', 'Organic Spices', 'Ayurvedic Oils', 
-    'Natural Cosmetics', 'Superfoods', 'Wellness Kits'
+    'Chilli', 'Turmeric', 'Oils', 
+    'Rice', 'Pulses'
   ];
 
   const priceRanges = [
@@ -171,7 +171,6 @@ const ProductsPage = () => {
                     <Card.Body className="d-flex flex-column">
                       <div className="mb-2">
                         <Badge bg="success" className="me-1">Organic</Badge>
-                        <Badge bg="warning" text="dark">Ayurvedic</Badge>
                       </div>
                       <Card.Title>Organic Product {i+1}</Card.Title>
                       <Card.Text className="text-muted">
