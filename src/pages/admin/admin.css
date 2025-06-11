@@ -1,0 +1,97 @@
+/* Admin Dashboard Base Styles */
+.admin-dashboard {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* Navigation Styling */
+.admin-nav .nav-link {
+    font-weight: 500;
+    color: #495057;
+    transition: all 0.3s ease;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    margin: 0 5px;
+}
+
+.admin-nav .nav-link.active {
+    background: linear-gradient(145deg, #ffffff, #e9ecef);
+    color: #0d6efd;
+    border-color: transparent;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.admin-nav .nav-link:not(.active):hover {
+    color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Drag & Drop Zone */
+.drag-drop-zone {
+    background: linear-gradient(45deg, #f8f9fa, #ffffff);
+    border: 2px dashed #dee2e6;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 12px;
+}
+
+.drag-drop-zone.dragover {
+    border-color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.1);
+}
+
+/* Form Enhancements */
+.admin-form-control {
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-form-control:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+/* Card Styling */
+.admin-card {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 
+                0 4px 6px -2px rgba(0, 0, 0, 0.03);
+}
+
+/* Button Enhancements */
+.admin-btn-primary {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.admin-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25);
+}
+
+/* File Previews */
+.file-preview-item {
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: 4px 0;
+    transition: background 0.2s ease;
+}
+
+.file-preview-item:hover {
+    background: #e9ecef;
+}
