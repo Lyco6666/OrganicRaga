@@ -6,12 +6,33 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const HomePage = () => {
-  const products = [...Array(8)].map((_, i) => ({
-    id: i+1,
-    name: `Organic Product ${i+1}`,
-    price: Math.floor(Math.random() * 2000) + 500,
-    image: `https://via.placeholder.com/400x300?text=Product+${i+1}`
-  }));
+  const products = [
+    {
+      id: 1,
+      name: "Organic Product 1",
+      price: 1200,
+      image: "/products1.jpg" // Make sure this file exists in public/
+    },
+    {
+      id: 2,
+      name: "Organic Product 2",
+      price: 1500,
+      image: "/product2.jpg"
+    },
+    {
+      id: 3,
+      name: "Organic Product 3",
+      price: 900,
+      image: "/product3.jpg"
+    },
+    {
+      id: 4,
+      name: "Organic Product 4",
+      price: 1100,
+      image: "/spices1.jpg"
+    },
+    // ...add more products as needed
+  ];
 
   return (
     <>
@@ -45,7 +66,7 @@ const HomePage = () => {
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="./f1.jpg"
+              src="/background1.jpg"
               alt="First slide"
             />
             <Carousel.Caption className="text-start mb-5">
@@ -95,8 +116,8 @@ const HomePage = () => {
               <Col md={4} key={i}>
                 <Card className="text-white border-0 overflow-hidden">
                   <Card.Img 
-                    src={`https://via.placeholder.com/600x400?text=${cat}`} 
-                    alt={cat}
+                    src="/spices.jpg"
+                    alt="organic spices"
                   />
                   <Card.ImgOverlay className="d-flex align-items-center bg-dark bg-opacity-50">
                     <h4 className="text-center w-100">{cat}</h4>
