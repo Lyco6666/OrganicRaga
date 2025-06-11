@@ -23,6 +23,45 @@ const ProductsPage = () => {
 
   const ratings = [5, 4, 3, 2];
 
+  const products = [
+    {
+      name: "Organic Chilli",
+      image: "/organic products1.jpg",
+      price: 599,
+      description: "Premium organic chilli.",
+    },
+    {
+      name: "Organic Turmeric",
+      image: "/organic products2.jpg",
+      price: 499,
+      description: "Pure organic turmeric.",
+    },
+    {
+      name: "Organic Oil",
+      image: "/organicproduct3.jpg",
+      price: 899,
+      description: "Cold-pressed organic oil.",
+    },
+    {
+      name: "Organic Rice",
+      image: "/organic products4.jpg",
+      price: 799,
+      description: "Naturally grown organic rice.",
+    },
+    {
+      name: "Organic Pulses",
+      image: "/organic products5.jpg",
+      price: 699,
+      description: "High-protein organic pulses.",
+    },
+    {
+      name: "Organic Spices",
+      image: "/organic products6.jpg",
+      price: 999,
+      description: "Aromatic organic spices.",
+    },
+  ];
+
   const toggleCategory = (category) => {
     setFilters(prev => ({
       ...prev,
@@ -160,25 +199,25 @@ const ProductsPage = () => {
             </div>
 
             <Row xs={1} md={2} lg={3} className="g-4">
-              {[...Array(6)].map((_, i) => (
+              {products.map((product, i) => (
                 <Col key={i}>
                   <Card className="h-100 shadow-sm border-0">
                     <Card.Img 
                       variant="top" 
-                      src={`https://via.placeholder.com/300x200?text=Product+${i+1}`}
+                      src={product.image}
                       style={{ objectFit: 'cover', height: '200px' }}
                     />
                     <Card.Body className="d-flex flex-column">
                       <div className="mb-2">
                         <Badge bg="success" className="me-1">Organic</Badge>
                       </div>
-                      <Card.Title>Organic Product {i+1}</Card.Title>
+                      <Card.Title>{product.name}</Card.Title>
                       <Card.Text className="text-muted">
-                        Premium quality organic product with natural ingredients.
+                        {product.description}
                       </Card.Text>
                       <div className="mt-auto">
                         <div className="d-flex justify-content-between align-items-center">
-                          <h5 className="mb-0 text-success">₹{Math.floor(Math.random() * 2000) + 500}</h5>
+                          <h5 className="mb-0 text-success">₹{product.price}</h5>
                           <div className="text-warning">★★★★☆</div>
                         </div>
                         <Button 
