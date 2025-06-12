@@ -6,50 +6,122 @@ import { Nav } from 'react-bootstrap';
 import './admin.css';  // Add this with other imports
 
 const AdminDashboard = () => {
-  // Add state for active tab
+  
   const [activeTab, setActiveTab] = useState('products');
   const [productData, setProductData] = useState({
     name: '',
     description: '',
     price: '',
     stock: '',
+    categories: [], // Add categories to initial state
     images: []
   });
   const [files, setFiles] = useState([]);
   const [dragOver, setDragOver] = useState(false);
   const navigate = useNavigate();
 
+  // Define categories array
+  const categories = ['Chilli', 'Oils', 'Rice', 'Turmeric', 'Pulses'];
+
   // Check admin authentication
   const [isLoggedIn] = useState(true); // Replace with actual auth check
 
-  const handleFileUpload = (files) => {
-    setProductData({ ...productData, images: files });
+  // ImageKit configuration
+  const publicKey = "public_/uHIZBdABUIAS2ltaAsQMUw2ucY=";
+  const urlEndpoint = "https://ik.imagekit.io/i9akffcs8";
+
+  const authenticator = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/auth"); // Updated to port 5000
+      if (!response.ok) throw new Error("Auth request failed");
+      return await response.json();
+    } catch (error) {
+      console.error("Auth failed:", error);
+      throw error;
+    }
   };
 
   const handleChange = (e) => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your API call here
-    console.log('Product Data:', productData);
-  };
-
-  const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    setFiles(selectedFiles);
-    setProductData({ ...productData, images: selectedFiles });
-  };
-
-  const handleDrop = (e) => {
+    const handleDrop = (e) => {
     e.preventDefault();
     const droppedFiles = Array.from(e.dataTransfer.files);
     setFiles(droppedFiles);
-    setProductData({ ...productData, images: droppedFiles });
     setDragOver(false);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      // First get authentication from server
+      const authData = await authenticator();
+      if (!authData) {
+        alert('Authentication failed');
+        return;
+      }
+  
+      // Upload files to ImageKit first
+      const uploadPromises = files.map(file => {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('fileName', file.name);
+        formData.append('publicKey', publicKey);
+        formData.append('signature', authData.signature);
+        formData.append('expire', authData.expire.toString()); // Convert to string
+        formData.append('token', authData.token);
+  
+        return fetch('https://upload.imagekit.io/api/v1/files/upload', {
+          method: 'POST',
+          body: formData // Remove headers as FormData sets them automatically
+        })
+        .then(response => response.json())
+        .then(data => data.url)
+        .catch(() => null);
+      });
+  
+      const imageUrls = await Promise.all(uploadPromises);
+      const validImageUrls = imageUrls.filter(url => url !== null);
+  
+      if (files.length > 0 && validImageUrls.length === 0) {
+        alert('Failed to upload images. Please try again.');
+        return;
+      }
+  
+      // Submit product data with image URLs
+      const response = await fetch('http://localhost:5000/api/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...productData,
+          images: validImageUrls
+        })
+      });
+  
+      if (response.ok) {
+        alert('Product saved successfully!');
+        setProductData({
+          name: '',
+          description: '',
+          price: '',
+          stock: '',
+          categories: [],
+          images: []
+        });
+        setFiles([]);
+      } else {
+        alert('Error saving product');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while saving the product');
+    }
+  };
+  
   if (!isLoggedIn) {
     navigate('/login');
     return null;
@@ -93,15 +165,15 @@ const AdminDashboard = () => {
                       <input
                         type="file"
                         multiple
-                        onChange={handleFileChange}
+                        onChange={(e) => {
+                          const selectedFiles = Array.from(e.target.files);
+                          setFiles(selectedFiles);
+                        }}
                         className="d-none"
                         id="fileInput"
                         accept="image/*"
                       />
-                      <label 
-                        htmlFor="fileInput"
-                        className="btn btn-outline-primary mb-3"
-                      >
+                      <label htmlFor="fileInput" className="btn btn-outline-primary mb-3">
                         Select Files
                       </label>
                       <p className="text-muted">or drag and drop files here</p>
@@ -177,6 +249,27 @@ const AdminDashboard = () => {
                             onChange={handleChange}
                             required
                           />
+                        </Form.Group>
+                      </Col>
+
+                      <Col md={6}>
+                        <Form.Group controlId="productCategories">
+                          <Form.Label>Categories</Form.Label>
+                          <Form.Select 
+                            multiple
+                            value={productData.categories}
+                            onChange={(e) => {
+                              const options = [...e.target.options];
+                              const selected = options
+                                .filter(option => option.selected)
+                                .map(option => option.value);
+                              setProductData({...productData, categories: selected});
+                            }}
+                          >
+                            {categories.map(category => (
+                              <option key={category} value={category}>{category}</option>
+                            ))}
+                          </Form.Select>
                         </Form.Group>
                       </Col>
 
